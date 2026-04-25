@@ -57,6 +57,8 @@ sdist.exclude = [
 
 [tool.cibuildwheel]
 build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
+skip = "*-musllinux_*"
+archs = ["auto64"]
 test-command = "python -c \"import _wrs_jlchain_native_kdl; import wrs_jlchain_native; print(_wrs_jlchain_native_kdl.__doc__ or 'ok')\""
 
 [tool.cibuildwheel.windows]
