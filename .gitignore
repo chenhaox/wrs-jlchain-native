@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build and packaging outputs
+build/
+dist/
+wheelhouse/
+_skbuild/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake.user
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.obj
+*.lib
+*.exp
+*.ilk
+*.pdb
+
+# Local environments and editor state
+.venv/
+venv/
+.idea/
+.vscode/
+
+# Local scratch
+main.py
+wrs/

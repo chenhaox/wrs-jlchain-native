@@ -1,0 +1,64 @@
+[build-system]
+requires = [
+    "includeigen>=0.1",
+    "scikit-build-core>=0.10",
+    "pybind11>=2.12",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "wrs-jlchain-native"
+version = "0.1.0"
+description = "Native FK, Jacobian, IK, and runtime-state acceleration for WRS JLChain"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "LGPL-2.1-or-later" }
+authors = [
+    { name = "WRS JLChain Backend Contributors" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy",
+]
+
+[project.urls]
+Homepage = "https://github.com/chenhaox/wrs-jlchain-native"
+Issues = "https://github.com/chenhaox/wrs-jlchain-native/issues"
+
+[tool.scikit-build]
+cmake.source-dir = "src"
+wheel.packages = ["src/python/wrs_jlchain_native"]
+sdist.include = [
+    "src",
+    "third_party/orocos_kinematics_dynamics/orocos_kdl",
+]
+sdist.exclude = [
+    ".idea",
+    "build",
+    "dist",
+    "**/__pycache__",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "wrs",
+    "main.py",
+]
+
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
+test-command = "python -c \"import _wrs_jlchain_native_kdl; import wrs_jlchain_native; print(_wrs_jlchain_native_kdl.__doc__ or 'ok')\""
+
+[tool.cibuildwheel.windows]
+before-build = "pip install delvewheel"
+repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel}"
