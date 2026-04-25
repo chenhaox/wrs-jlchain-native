@@ -29,7 +29,18 @@ set(WRS_OROCOS_KDL_DIR
     "${CMAKE_CURRENT_LIST_DIR}/../third_party/orocos_kinematics_dynamics/orocos_kdl"
     CACHE PATH "Path to the Orocos KDL source tree")
 
+# KDL's upstream CMake hard-codes SHARED on non-MSVC platforms. For Python
+# wheels, keep the vendored backend self-contained so auditwheel/delocate do
+# not need to chase a separate liborocos-kdl runtime library.
+if(NOT MSVC)
+    set(WRS_JLCHAIN_NATIVE_RESTORE_MSVC TRUE)
+    set(MSVC TRUE)
+endif()
 add_subdirectory("${WRS_OROCOS_KDL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/orocos_kdl" EXCLUDE_FROM_ALL)
+if(WRS_JLCHAIN_NATIVE_RESTORE_MSVC)
+    unset(MSVC)
+endif()
+set_target_properties(orocos-kdl PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 pybind11_add_module(_wrs_jlchain_native_kdl
     wrs_jlchain_native/kdl_backend.cpp
