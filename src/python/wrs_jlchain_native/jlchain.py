@@ -30,11 +30,15 @@ class _BackendLinkProxy:
 
     @property
     def gl_pos(self):
-        return self._owner._kinematics_backend.gl_pos_q[self._joint_id]
+        backend = self._owner._kinematics_backend
+        # Native buffers describe joint frames; meshes live in link frames.
+        return (backend.gl_pos_q[self._joint_id]
+                + backend.gl_rotmat_q[self._joint_id] @ self._source.loc_pos)
 
     @property
     def gl_rotmat(self):
-        return self._owner._kinematics_backend.gl_rotmat_q[self._joint_id]
+        return (self._owner._kinematics_backend.gl_rotmat_q[self._joint_id]
+                @ self._source.loc_rotmat)
 
     @property
     def gl_homomat(self):
